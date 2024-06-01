@@ -1,22 +1,16 @@
 use std::collections::HashMap;
-use std::str;
 
 const SCI : &str = "\x33[";
 //const OSC : &str = "\x33]";
 
 fn convert_code(code : u8) -> String {
+    /// create an ANSI ES character from the code
     return String::from(SCI) + &code.to_string() + "m";
 }
 
-fn clear_screen() -> String { // навеное, то что делает cls
-    return String::from(SCI) + "2" + "J";
-}
-
-fn clear_line() -> String {
-    return String::from(SCI) + "2" + "K";
-}
-
 fn fore() -> HashMap<&'static str, String> {
+    /// Get HashMap with all fore colors
+    /// Colors: "BLACK", "RED", "GREEN", YELLOW, "BLUE", "MAGENTA", "CYAN", "WHITE", "RESET"
     let mut colors = HashMap::new();
     colors.insert("BLACK", convert_code(30));
     colors.insert("RED", convert_code(31));
@@ -31,6 +25,8 @@ fn fore() -> HashMap<&'static str, String> {
 }
 
 fn back() -> HashMap<&'static str, String> {
+    /// Get HashMap with all background colors
+    /// Colors: "BLACK", "RED", "GREEN", YELLOW, "BLUE", "MAGENTA", "CYAN", "WHITE", "RESET"
     let mut colors = HashMap::new();
     colors.insert("BLACK", convert_code(40));
     colors.insert("RED", convert_code(41));
@@ -76,4 +72,63 @@ impl AnsiCursor { // для перемещения курсора
     }
 }
 
-//
+struct FormatedString{
+    _string : String,
+    _fore : String,
+    _back : String,
+    _style : String
+}
+
+impl FormatedString{
+    fn new(){
+        FormatedString{
+            string : String::new(),
+            fore : convert_code(39),
+            back : convert_code(49),
+            style : convert_code(22)
+        }
+    }
+    fn paint(color :&str){
+        /// sets text color
+        /// colors: black, red, yellow, green, blue, cyan, magenta and white
+        match color {
+            "black" => _fore = convert_code(30),
+            "red" => _fore = convert_code(31),
+            "green" => _fore = convert_code(32),
+            "yellow" => _fore = convert_code(33),
+            "blue" => _fore = convert_code(34),
+            "magenta" => _fore = convert_code(35),
+            "cyan" => _fore = convert_code(36),
+            "white" => _fore = convert_code(37),
+            _ => _fore = convert_code(39)
+        }
+    }
+    fn fill(color : &str){
+        /// sets background color
+        /// colors: black, red, yellow, green, blue, cyan, magenta and white
+        match color {
+            "black" => _back = convert_code(40),
+            "red" => _back = convert_code(41),
+            "green" => _back = convert_code(42),
+            "yellow" => _back = convert_code(43),
+            "blue" => _back = convert_code(44),
+            "magenta" => _back = convert_code(45),
+            "cyan" => _back = convert_code(46),
+            "white" => _back = convert_code(47),
+            _ => _back = convert_code(49)
+        }
+    }
+    fn styling( _type : &str ){
+        /// sets style to text
+        /// styles: bright, dim
+        match _type{
+            "bright" => _style = convert_code(1),
+            "dim" => _style = convert_code(2),
+            _ => _style = convert_code(22)
+        }
+    }
+    fn compile() -> String{
+        /// compiling FormatedString to String
+        return fore + back + style + _string + reset();
+    }
+}

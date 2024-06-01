@@ -1,6 +1,8 @@
-# ansi es ( ansi escape sequences )
+# ansi es ( ansi escape sequences ) 1.1
 
 [EN] Library for convenient interaction with ANSI ESCAPE SEQUENCES. It allows formatting text and moving the cursor directly in the console. It is an equivalent to the [colorama](https://github.com/tartley/colorama) library in Python.
+
+[UPDATE] Add class FormatedString
 
 #### Now, more details about the content
 
